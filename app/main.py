@@ -3,7 +3,7 @@ import itertools
 
 from telegram.ext import Updater
 
-from app import config
+import app.config
 from app.handlers import debug
 
 
@@ -14,7 +14,7 @@ logging.basicConfig(
 
 
 updater = Updater(
-    token=config.BOT_TOKEN,
+    token=app.config.BOT_TOKEN,
     use_context=True
 )
 
@@ -27,16 +27,16 @@ for handler in itertools.chain(
 
 
 # Use polling if BOT_DEBUG is True
-if config.BOT_DEBUG:
+if app.config.DEBUG:
     updater.start_polling()
 else:
     updater.start_webhook(
-        listen=config.WEBHOOK_HOST,
-        port=config.WEBHOOK_PORT,
-        url_path=config.WEBHOOK_PATH,
+        listen=app.config.WEBHOOK['HOST'],
+        port=app.config.WEBHOOK['PORT'],
+        url_path=app.config.WEBHOOK['PATH'],
     )
     updater.bot.set_webhook(
-        url=config.WEBHOOK_URL,
+        url=app.config.WEBHOOK['URL'],
     )
 
 
